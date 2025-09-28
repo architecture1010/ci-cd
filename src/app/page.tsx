@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      Hello world Hi everyone
+      Hello world Hi
       <div className="">
         <table className="border-collapse border table-fixed w-1/2 text-center m-auto">
           <thead className="bg-gray-700 text-white">
