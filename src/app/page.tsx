@@ -26,7 +26,7 @@ export default function Home() {
             {
               content.map((item, i) => {
                 return (
-                  <tr>
+                  <tr key={i}>
                     <td className="border p-4">{i + 1}</td>
                     <td className="border">{item.name}</td>
                     <td className="border">{item.price}</td>
