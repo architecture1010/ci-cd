@@ -1,4 +1,4 @@
 export interface ListItem {
-    name: String,
-    price: Number
+    name: string,
+    price: number
 }
