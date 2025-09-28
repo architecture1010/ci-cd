@@ -28,8 +28,8 @@ export default function Home() {
                 return (
                   <tr>
                     <td className="border p-4">{i + 1}</td>
-                    <td className="border">{item.Name}</td>
-                    <td className="border">{item.Price}</td>
+                    <td className="border">{item.name}</td>
+                    <td className="border">{item.price}</td>
                   </tr>
                 )
               })
