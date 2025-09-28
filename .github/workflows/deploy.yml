@@ -40,7 +40,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PASSWORD }}
           source: "deploy.tar.gz"
           target: "${{ secrets.TARGET_DIR }}"
 
