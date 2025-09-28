@@ -1,0 +1,60 @@
+name: Deploy mytodo to VPS
+
+on:
+  push:
+    branches:
+      - main  # this branch is pushed, workflow runs
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest   #procedure 
+
+    steps:
+      # 1Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Build Next.js
+      - name: Build project
+        run: npm run build
+
+      # Package files
+      - name: Package production files
+        run: tar -czf deploy.tar.gz .next package.json package-lock.json public
+
+      # Copy files to VPS
+      - name: Copy files to VPS
+        uses: appleboy/scp-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "deploy.tar.gz"
+          target: "${{ secrets.TARGET_DIR }}"
+
+      # Deploy on VPS
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.TARGET_DIR }}
+            tar -xzf deploy.tar.gz -C .
+            npm install --production
+            pm2 restart todo-nextjs || pm2 start npm --name "todo-nextjs" -- start
+            pm2 save
